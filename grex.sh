@@ -89,6 +89,7 @@ function Script:main() {
       #TIP: use «$script_prefix full» to run the full FRB detection pipeline
       Os:require "parallel"
       dada_init
+      set_fem_atten
       snap_init
       IO:announce "Starting T0 -> T1 -> T2 Pipeline"
       # Construct pipeline process launch commands
@@ -108,6 +109,7 @@ function Script:main() {
       #TIP: use «$script_prefix cand_file» to run the pipeline through heimdall, dumping candidates to a file
       Os:require "parallel"
       dada_init
+      set_fem_atten
       snap_init
       IO:announce "Starting T0 -> T1 Candidate File Pipeline"
       # Construct pipeline process launch commands
@@ -126,6 +128,7 @@ function Script:main() {
       #TIP: use «$script_prefix cand_socket» to run the pipeline through heimdall, dumping candidates to a socket
       Os:require "parallel"
       dada_init
+      set_fem_atten
       snap_init
       IO:announce "Starting T0 -> T1 Candidate File Pipeline"
       # Construct pipeline process launch commands
@@ -144,6 +147,7 @@ function Script:main() {
      #TIP: use «$script_prefix dada» to run the pipeline to fill a DADA buffer (inlcluding RFI filtering), but not starting heimdall
       Os:require "parallel"
       dada_init
+      set_fem_atten
       snap_init
       IO:announce "Starting T0 -> DADA Buffer Pipeline"
       # Construct pipeline process launch commands
@@ -159,6 +163,7 @@ function Script:main() {
 
     filterbank)
       #TIP: use «$script_prefix filterbank» to run just T0 to fill a filterbank file
+      set_fem_atten
       snap_init
       IO:announce "Starting T0 -> Filterbank Pipeline"
       t0=$(t0_cmd "filterbank")
@@ -171,6 +176,7 @@ function Script:main() {
 
     none)
       #TIP: use «$script_prefix none» to run just T0 with no exfil (only talks to Prometheus)
+      set_fem_atten
       snap_init
       IO:announce "Starting T0"
       t0=$(t0_cmd "")
