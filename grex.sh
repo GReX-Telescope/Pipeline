@@ -53,6 +53,7 @@ option|dbp|db_path|path to SQLite database|/hdd/data/candidates.db
 option|cp2|t2_cand_path|path to T2 intermediate candidates|/hdd/data/candidates/T2/
 option|ds|dm_start|lower limit DM of search|2
 option|de|dm_end|upper limit DM of search|3000
+option|bm|boxcar_max|largest boxcar size to use in heimdall|32
 option|f|gateware|gateware file|$script_install_folder/../t0/gateware/grex_gateware.fpg
 option|t0|t0_path|path to t0 executable|$script_install_folder/../t0/target/release/grex_t0
 option|cr|clean_rfi_path|path to clean_rfi executable|$script_install_folder/../clean_rfi/target/release/clean_rfi
@@ -328,7 +329,7 @@ function t1_cmd() {
     -nsamps_gulp $samples \
     -nbeams 1 \
     -dm_tol 1.50 \
-    -boxcar_max 4 \
+    -boxcar_max $boxcar_max \
     -dm $dm_start $dm_end \
     -scrunching 0 $1"
 }
