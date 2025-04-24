@@ -60,6 +60,7 @@ option|t2|t2_path|path to t2 folder|$script_install_folder/../t2
 option|sb|snap_bringup_path|path to snap bringup python script|$script_install_folder/../snap_bringup
 option|dg|digital_gain|digital gain for the ADC|4
 option|rg|requant_gain|set a fixed requantization gain|5
+option|fa|fem_atten|set the FEM attenuation level|5
 option|d|samples|Number of samples in each DADA block|200000
 option|rfit|rfi_time_thresh|Sigma cut threshold for RFI excision in time|5
 option|rfif|rfi_freq_thresh|Sigma cut threshold for RFI excision in freq|5
@@ -246,6 +247,11 @@ function snap_powercycle() {
   IO:announce "Power cycling SNAP"
   ssh pi "./snap.sh off"
   ssh pi "./snap.sh on"
+}
+
+function set_fem_atten() {
+  IO:announce "Setting the FEM attenuation"
+  ssh pi "./cli /dev/ttyAMA0 atten $fem_atten"
 }
 
 function snap_init() {
