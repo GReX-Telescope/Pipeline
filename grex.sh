@@ -43,16 +43,16 @@ flag|q|quiet|no output
 flag|v|verbose|also show debug messages
 flag|st|skip_ntp|skip NTP synchronization
 flag|tg|trigger|trigger packets directly (no GPS)
-option|ap|average_power|2^n for downsampling|4
-option|vc|vbuf_capacity|Capacity for the voltage buffer size|3662109
+option|ap|average_power|2^n for downsampling|2
+option|vc|vbuf_capacity|Capacity for the voltage buffer size|8388608
 option|ic|injection_cadence|time in seconds in inject fake pulses|36000
 option|ip|injection_path|path to folder of fake pulses (.dat)|$script_install_folder/fake
 option|vp|voltage_path|directory to save voltage dumps|/hdd/data/voltages/
 option|fp|filterbank_path|directory to save filterbanks|/hdd/data/filterbanks/
 option|dbp|db_path|path to SQLite database|/hdd/data/candidates.db
 option|cp2|t2_cand_path|path to T2 intermediate candidates|/hdd/data/candidates/T2/
-option|ds|dm_start|lower limit DM of search|2
-option|de|dm_end|upper limit DM of search|3000
+option|ds|dm_start|lower limit DM of search|20
+option|de|dm_end|upper limit DM of search|1000
 option|bm|boxcar_max|largest boxcar size to use in heimdall|32
 option|f|gateware|gateware file|$script_install_folder/../t0/gateware/grex_gateware.fpg
 option|t0|t0_path|path to t0 executable|$script_install_folder/../t0/target/release/grex_t0
@@ -60,9 +60,9 @@ option|cr|clean_rfi_path|path to clean_rfi executable|$script_install_folder/../
 option|t2|t2_path|path to t2 folder|$script_install_folder/../t2
 option|sb|snap_bringup_path|path to snap bringup python script|$script_install_folder/../snap_bringup
 option|dg|digital_gain|digital gain for the ADC|4
-option|rg|requant_gain|set a fixed requantization gain|5
+option|rg|requant_gain|set a fixed requantization gain|40
 option|fa|fem_atten|set the FEM attenuation level|5
-option|d|samples|Number of samples in each DADA block|200000
+option|d|samples|Number of samples in each DADA block|65536
 option|rfit|rfi_time_thresh|Sigma cut threshold for RFI excision in time|5
 option|rfif|rfi_freq_thresh|Sigma cut threshold for RFI excision in freq|5
 option|s|snap|IP address of the SNAP|192.168.0.3
