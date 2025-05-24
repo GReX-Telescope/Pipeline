@@ -67,6 +67,7 @@ option|rfit|rfi_time_thresh|Sigma cut threshold for RFI excision in time|5
 option|rfif|rfi_freq_thresh|Sigma cut threshold for RFI excision in freq|5
 option|s|snap|IP address of the SNAP|192.168.0.3
 option|mac|mac|MAC address of the NIC we'll get packets on
+option|slack|slack_url|Slack webhook url for notifications
 choice|1|action|action to perform/pipeline mode|full,cand_socket,cand_file,dada,filterbank,none,check,snap_on,snap_off,snap_cycle,env,update,cleanup
 " -v -e '^#' -e '^\s*$'
 }
@@ -79,7 +80,6 @@ choice|1|action|action to perform/pipeline mode|full,cand_socket,cand_file,dada,
 CHANNELS=2048
 FROM_T0_KEY=b0ba
 FROM_RFI_CLEANING_KEY=cafe
-
 function Script:main() {
   IO:log "[$script_basename] $script_version started"
 
@@ -100,8 +100,10 @@ function Script:main() {
       t2=$(t2_cmd)
       trap _int SIGINT SIGTERM
       parallel --halt now,done=1 -u ::: "$t0" "$clean_rfi" "$t1" "$t2" &
+      alert_slack_up
       child=$!
       wait "$child"
+      alert_slack_down
       dada_cleanup
       snap_powerdown
       ;;
@@ -279,6 +281,28 @@ function dada_cleanup() {
   IO:announce "Cleaning up PSRDADA buffers"
   dada_db -k $FROM_T0_KEY -d
   dada_db -k $FROM_RFI_CLEANING_KEY -d
+}
+
+function alert_slack_up() {
+  Os:require "curl"
+  curl \
+    --silent \
+    --output /dev/null \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    --data "{\"username\": \"Pipeline Alerts\", \"attachments\": [{\"color\": \"good\",\"title\": \"Pipeline started on ${HOSTNAME}\"}]}" \
+    ${slack_url}
+}
+
+function alert_slack_down() {
+  Os:require "curl"
+  curl \
+    --silent \
+    --output /dev/null \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    --data "{\"username\": \"Pipeline Alerts\", \"attachments\": [{\"color\": \"danger\",\"title\": \"Pipeline stopped on ${HOSTNAME}\"}]}" \
+    ${slack_url}
 }
 
 ## Pipeline stage execution builders
